@@ -106,26 +106,25 @@ export default function AdminDashboard() {
     e.preventDefault();
     setIsLoggingIn(true);
     setLoginError('');
-    // Dev bypass
-    if (email === 'admin@flagship.ai' && password === 'admin123') {
-      sessionStorage.setItem('admin_token', 'dev-token');
-      setIsAuthenticated(true);
-      setIsLoggingIn(false);
-      return;
-    }
+
     try {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      if (!res.ok) { const d = await res.json(); throw new Error(d.detail || 'Login failed.'); }
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({ detail: 'Authentication failed.' }));
+        throw new Error(d.detail || 'Login failed.');
+      }
       const data = await res.json();
       sessionStorage.setItem('admin_token', data.access_token);
       setIsAuthenticated(true);
     } catch (err: unknown) {
-      setLoginError(err instanceof Error ? err.message : 'Backend offline — use admin@flagship.ai / admin123 for dev access.');
-    } finally { setIsLoggingIn(false); }
+      setLoginError(err instanceof Error ? err.message : 'Login failed. Please verify your admin credentials.');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   // ── Profile save ──────────────────────────────────────────────────────────
@@ -222,13 +221,12 @@ export default function AdminDashboard() {
             </div>
             <h2 className="text-2xl font-bold text-white">Secure CMS Admin</h2>
             <p className="text-sm text-gray-500 mt-1">Authenticate to manage portfolio database</p>
-            <p className="text-[10px] text-zinc-600 mt-2">Dev mode: admin@flagship.ai / admin123</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className={labelCls}>Admin Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="admin@flagship.ai"
+                placeholder="admin@example.com"
                 className="w-full bg-[#090a0f] border border-[#1f212e] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-violet-500 transition-colors" required />
             </div>
             <div>
@@ -588,12 +586,12 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               <div className="p-6 bg-zinc-900/40 border border-[#1f212e] rounded-xl space-y-4 max-w-xl">
                 <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-violet-500" /> System Agent Prompts
+                  <Brain className="w-4 h-4 text-violet-500" /> KAIROS System Prompts
                 </h4>
-                <p className="text-xs text-gray-500">Tune the AI assistant's personality. Will be wired to Supabase + LangGraph in Phase 3.</p>
+                <p className="text-xs text-gray-500">Tune KAIROS's personality and system constraints. Persisted to Supabase and LangGraph.</p>
                 <div>
                   <label className={labelCls}>System Instruction</label>
-                  <textarea defaultValue="You are Harish Kamireddi's AI Assistant. Ground all answers strictly in the knowledge base. Be professional and direct." rows={6}
+                  <textarea defaultValue="You are KAIROS, Harish Kamireddi's AI Assistant representation. Ground all answers strictly in the knowledge base. Be professional, concise, and direct." rows={6}
                     className={inputCls + ' font-mono'} />
                 </div>
                 <div>

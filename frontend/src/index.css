@@ -3,37 +3,121 @@
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   
-  /* Modern Dark Mode Color Palette inspired by Vercel/Linear */
-  --color-background: #090a0f;
+  --color-background: #06070a;
   --color-foreground: #f3f4f6;
-  --color-card: #12131a;
-  --color-card-border: #1f212e;
-  --color-primary: #8b5cf6; /* Modern Violet */
+  --color-card: #0c0e17;
+  --color-card-border: #1a1e2e;
+  --color-primary: #8b5cf6;
   --color-primary-hover: #7c3aed;
-  --color-accent: #10b981; /* Green Accent */
+  --color-cyan-glow: #06b6d4;
+  --color-accent: #10b981;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: #06070a;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-card-border);
-  border-radius: 3px;
+  background: #1e2235;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: #8b5cf6;
 }
 
 html, body, #root {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: #06070a;
+  color: #f3f4f6;
   font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+    filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.6));
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: drop-shadow(0 0 28px rgba(6, 182, 212, 0.8));
+  }
+}
+
+@keyframes floatSmooth {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes holographicShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes audioWave {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 22s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spinReverse 16s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: floatSmooth 4.5s ease-in-out infinite;
+}
+
+.text-gradient-shimmer {
+  background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 25%, #67e8f9 50%, #e0e7ff 75%, #ffffff 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holographicShimmer 6s ease infinite;
+}
+
+.bg-glass {
+  background: rgba(12, 14, 23, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bg-glass-card {
+  background: linear-gradient(145deg, rgba(17, 20, 32, 0.85) 0%, rgba(10, 12, 20, 0.7) 100%);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.bg-glass-card:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 15px 40px -10px rgba(139, 92, 246, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }

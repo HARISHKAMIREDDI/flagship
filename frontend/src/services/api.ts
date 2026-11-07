@@ -130,3 +130,12 @@ export const skillsApi = {
     request<void>(`/skills/${id}`, { method: 'DELETE' }),
 };
 
+// ── AI Chat Agent ─────────────────────────────────────────────────────────
+
+export const chatApi = {
+  send: (message: string, systemPrompt?: string) =>
+    request<{ response: string; timestamp: string }>('/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message, system_prompt: systemPrompt }),
+    }),
+};
